@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { GifsList } from "./gifs/components/GifList";
 import { PreviousSearches } from "./gifs/components/PreviousSearches";
-import { mockGifs } from "./mock-data/gifs.mock";
 import { CustomHeader } from "./shared/componets/CustomHeader";
 import { SearchBar } from "./shared/componets/SearchBar";
 import { getGifsByQuery } from "./gifs/actions/get-gifs-by-query.actions";
+import type { Gif } from "./gifs/interfaces/gif.interface";
 
 export const GifsApp = () => {
-  const [previousTerms, setPreviousTerms] = useState(["goku"]);
+  const [previousTerms, setPreviousTerms] = useState<string[]>([]);
+  const [gifs, setGifs] = useState<Gif[]>([]);
 
   const handleTermClick = (term: string) => {
     console.log({ term });
@@ -25,7 +26,7 @@ export const GifsApp = () => {
     });
     const gifs = await getGifsByQuery(normalizedQuery);
 
-    console.log(gifs);
+    setGifs(gifs);
   };
 
   return (
@@ -50,7 +51,7 @@ export const GifsApp = () => {
       />
 
       {/* Gifs  */}
-      <GifsList gifs={mockGifs} />
+      <GifsList gifs={gifs} />
     </>
   );
 };
